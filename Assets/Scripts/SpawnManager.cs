@@ -113,11 +113,11 @@ public class SpawnManager : MonoBehaviour {
                 originPosition = randomPosition;
 
 				//Optionally spawn enemy on platform
-				if (shouldSpawnEnemies) {
+				if (shouldSpawnEnemies && player) {
 					randomPosition.y += DIST_ABOVE_PLATFORM;
 					if (Random.Range (0.0f, 1.0f) < enemySpawnProb) {
 						GameObject newEnemy = Instantiate (enemy, randomPosition, Quaternion.identity, enemyLayer.transform);
-						newEnemy.GetComponent<EnemyScript> ().player = player.transform;
+                        newEnemy.GetComponent<EnemyScript> ().player = player.transform;
 					}
 				}
 			}

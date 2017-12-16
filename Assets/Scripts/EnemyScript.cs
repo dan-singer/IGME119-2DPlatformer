@@ -38,26 +38,13 @@ public class EnemyScript : MonoBehaviour {
 		leftGrounded = Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << LayerMask.NameToLayer("Ground"));
 		rightGrounded = Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << LayerMask.NameToLayer("Ground"));
 
-
-//		if (player.position.y > rb2d.transform.position.y + 1f && !jump && grounded)
-//        {
-//            jump = true;
-//        }  
-
 		// Auto-Fire
 		if (weapon != null && weapon.enabled && weapon.CanAttack)
 		{
-			//source.PlayOneShot(audio_Shot);
 			weapon.Attack(true);
 			gameObject.GetComponent<Animator>().SetBool("Shoot",true);
 		}
-
-//		// 4 - Out of the camera ? Destroy the game object.
-//		if (GetComponent<Renderer>().IsVisibleFrom(Camera.main) == false)
-//		{
-//			Destroy(gameObject);
-//		}
-
+    
 		if (player != null) {
 			if (player.position.x < gameObject.transform.position.x && leftGrounded) {
 				gameObject.transform.Translate (maxSpeed * Time.deltaTime * -1f, 0, 0);

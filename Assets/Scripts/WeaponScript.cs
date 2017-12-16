@@ -19,24 +19,29 @@ public class WeaponScript : MonoBehaviour {
 	/// <summary>
 	/// Cooldown in seconds between two shots
 	/// </summary>
-	public float shootingRate = 1f;
+	public float durationBetweenShots = 1f;
 	
 	//--------------------------------
 	// 2 - Cooldown
 	//--------------------------------
 	
-	private float shootCooldown;
+	private float shootTimer;
+
+
+    private Collider2D collider;
 	
 	void Start()
 	{
-		shootCooldown = 0f;
+		shootTimer = 0f;
+        collider = GetComponent<Collider2D>();
+
 	}
 	
 	void Update()
 	{
-		if (shootCooldown > 0)
+		if (shootTimer > 0)
 		{
-			shootCooldown -= Time.deltaTime;
+			shootTimer -= Time.deltaTime;
 		}
 	}
 	
@@ -51,13 +56,16 @@ public class WeaponScript : MonoBehaviour {
 	{
 		if (CanAttack)
 		{
-			shootCooldown = shootingRate;
-			
-			// Create a new shot
+			shootTimer = durationBetweenShots;
+
+            // Create a new shot
 			var shotTransform = Instantiate(shotPrefab) as Transform;
-			
-			// Assign position
-			shotTransform.position = transform.position;
+
+            // Assign position
+            if (!collider)
+                return;
+            Vector3 spawnPos = transform.position + new Vector3(-collider.bounds.extents.x, 0, 0);
+            shotTransform.position = spawnPos;
 			
 			// The is enemy property
 			ShotScript shot = shotTransform.gameObject.GetComponent<ShotScript>();
@@ -85,7 +93,7 @@ public class WeaponScript : MonoBehaviour {
 	{
 		get
 		{
-			return shootCooldown <= 0f;
+			return shootTimer <= 0f;
 		}
 	}
 }
